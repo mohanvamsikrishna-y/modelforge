@@ -1,0 +1,18 @@
+__pycache__/
+*.py[cod]
+.venv/
+.env
+.env.*
+!.env.example
+runs/
+*.egg-info/
+build/
+dist/
+.DS_Store
+*.local.json
+# Private notes and local credentials
+private/
+notes.local/
+*.pem
+*.key
+credentials*.json

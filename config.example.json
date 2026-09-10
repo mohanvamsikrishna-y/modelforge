@@ -1,0 +1,9 @@
+{
+  "models": [
+    {"id":"openai-primary","provider":"openai","model":"YOUR_OPENAI_MODEL","enabled":false,"input_rate":0,"output_rate":0,"quality":{"general":0.8,"extract":0.9},"latency_ms":700},
+    {"id":"anthropic-primary","provider":"anthropic","model":"YOUR_ANTHROPIC_MODEL","enabled":false,"input_rate":0,"output_rate":0,"quality":{"general":0.8,"summarize":0.9},"latency_ms":900},
+    {"id":"gemini-primary","provider":"gemini","model":"YOUR_GEMINI_MODEL","enabled":false,"input_rate":0,"output_rate":0,"quality":{"general":0.8},"latency_ms":500},
+    {"id":"local-primary","provider":"ollama","model":"YOUR_INSTALLED_OLLAMA_MODEL","enabled":false,"input_rate":0,"output_rate":0,"quality":{"general":0.7},"latency_ms":1000}
+  ],
+  "limits":{"max_session_usd":1.0,"max_session_tokens":100000,"requests_per_minute":30,"retries":1,"circuit_threshold":2,"cooldown":30,"cache_ttl":120,"cache_size":128}
+}

@@ -1,0 +1,11 @@
+.git
+.env*
+runs
+__pycache__
+.venv
+*.local.json
+private/
+notes.local/
+*.pem
+*.key
+credentials*.json

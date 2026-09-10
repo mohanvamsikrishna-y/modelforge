@@ -1,0 +1,1476 @@
+{
+  "created_at": "2026-09-10T18:31:22.731997+00:00",
+  "scenarios": [
+    {
+      "title": "01 / Prefer quality",
+      "description": "Task-specific quality scores select the premium fixture.",
+      "request": {
+        "prompt": "What is the capital of France?",
+        "task": "general",
+        "policy": "quality",
+        "max_output_tokens": 256,
+        "max_cost_usd": 0.05,
+        "max_tokens": 8192,
+        "schema": null,
+        "cache": true
+      },
+      "events": [
+        {
+          "type": "route",
+          "data": {
+            "policy": "quality",
+            "task": "general",
+            "candidates": [
+              {
+                "model": "demo-premium",
+                "score": 0.96,
+                "estimated_cost_usd": 0.003546
+              },
+              {
+                "model": "demo-fast",
+                "score": 0.86,
+                "estimated_cost_usd": 0.00035459999999999995
+              },
+              {
+                "model": "demo-local",
+                "score": 0.68,
+                "estimated_cost_usd": 0.0
+              }
+            ]
+          }
+        },
+        {
+          "type": "attempt",
+          "data": {
+            "model": "demo-premium",
+            "attempt": 1,
+            "reserved_usd": 0.003546
+          }
+        },
+        {
+          "type": "delta",
+          "data": {
+            "text": "Paris "
+          }
+        },
+        {
+          "type": "delta",
+          "data": {
+            "text": "is "
+          }
+        },
+        {
+          "type": "delta",
+          "data": {
+            "text": "the "
+          }
+        },
+        {
+          "type": "delta",
+          "data": {
+            "text": "capital "
+          }
+        },
+        {
+          "type": "delta",
+          "data": {
+            "text": "of "
+          }
+        },
+        {
+          "type": "delta",
+          "data": {
+            "text": "France."
+          }
+        },
+        {
+          "type": "done",
+          "data": {
+            "text": "Paris is the capital of France.",
+            "parsed": null,
+            "provider": "scripted-premium",
+            "model": "demo-premium",
+            "usage": {
+              "input_tokens": 6,
+              "output_tokens": 6
+            },
+            "cost_usd": 9e-05,
+            "accounted_cost_usd": 8.99999999999998e-05,
+            "accounted_tokens": 12,
+            "cache_hit": false,
+            "latency_ms": 0.16545795369893312
+          }
+        }
+      ],
+      "result": {
+        "text": "Paris is the capital of France.",
+        "parsed": null,
+        "provider": "scripted-premium",
+        "model": "demo-premium",
+        "usage": {
+          "input_tokens": 6,
+          "output_tokens": 6
+        },
+        "cost_usd": 9e-05,
+        "accounted_cost_usd": 8.99999999999998e-05,
+        "accounted_tokens": 12,
+        "cache_hit": false,
+        "latency_ms": 0.16545795369893312
+      }
+    },
+    {
+      "title": "02 / Serve from cache",
+      "description": "The identical request avoids another provider call and costs zero.",
+      "request": {
+        "prompt": "What is the capital of France?",
+        "task": "general",
+        "policy": "quality",
+        "max_output_tokens": 256,
+        "max_cost_usd": 0.05,
+        "max_tokens": 8192,
+        "schema": null,
+        "cache": true
+      },
+      "events": [
+        {
+          "type": "cache_hit",
+          "data": {
+            "model": "demo-premium"
+          }
+        },
+        {
+          "type": "delta",
+          "data": {
+            "text": "Paris is the capital of France."
+          }
+        },
+        {
+          "type": "done",
+          "data": {
+            "text": "Paris is the capital of France.",
+            "parsed": null,
+            "provider": "scripted-premium",
+            "model": "demo-premium",
+            "usage": {
+              "input_tokens": 6,
+              "output_tokens": 6
+            },
+            "cost_usd": 0.0,
+            "accounted_cost_usd": 0.0,
+            "accounted_tokens": 0,
+            "cache_hit": true,
+            "latency_ms": 0.05308410618454218
+          }
+        }
+      ],
+      "result": {
+        "text": "Paris is the capital of France.",
+        "parsed": null,
+        "provider": "scripted-premium",
+        "model": "demo-premium",
+        "usage": {
+          "input_tokens": 6,
+          "output_tokens": 6
+        },
+        "cost_usd": 0.0,
+        "accounted_cost_usd": 0.0,
+        "accounted_tokens": 0,
+        "cache_hit": true,
+        "latency_ms": 0.05308410618454218
+      }
+    },
+    {
+      "title": "03 / Budget-driven fallback",
+      "description": "A zero-dollar budget eliminates paid routes before dispatch.",
+      "request": {
+        "prompt": "Explain a circuit breaker.",
+        "task": "general",
+        "policy": "quality",
+        "max_output_tokens": 256,
+        "max_cost_usd": 0,
+        "max_tokens": 8192,
+        "schema": null,
+        "cache": true
+      },
+      "events": [
+        {
+          "type": "skipped",
+          "data": {
+            "model": "demo-premium",
+            "reason": "cost_budget"
+          }
+        },
+        {
+          "type": "skipped",
+          "data": {
+            "model": "demo-fast",
+            "reason": "cost_budget"
+          }
+        },
+        {
+          "type": "route",
+          "data": {
+            "policy": "quality",
+            "task": "general",
+            "candidates": [
+              {
+                "model": "demo-local",
+                "score": 0.68,
+                "estimated_cost_usd": 0.0
+              }
+            ]
+          }
+        },
+        {
+          "type": "attempt",
+          "data": {
+            "model": "demo-local",
+            "attempt": 1,
+            "reserved_usd": 0.0
+          }
+        },
+        {
+          "type": "delta",
+          "data": {
+            "text": "A "
+          }
+        },
+        {
+          "type": "delta",
+          "data": {
+            "text": "circuit "
+          }
+        },
+        {
+          "type": "delta",
+          "data": {
+            "text": "breaker "
+          }
+        },
+        {
+          "type": "delta",
+          "data": {
+            "text": "temporarily "
+          }
+        },
+        {
+          "type": "delta",
+          "data": {
+            "text": "stops "
+          }
+        },
+        {
+          "type": "delta",
+          "data": {
+            "text": "calls "
+          }
+        },
+        {
+          "type": "delta",
+          "data": {
+            "text": "to "
+          }
+        },
+        {
+          "type": "delta",
+          "data": {
+            "text": "a "
+          }
+        },
+        {
+          "type": "delta",
+          "data": {
+            "text": "failing "
+          }
+        },
+        {
+          "type": "delta",
+          "data": {
+            "text": "provider "
+          }
+        },
+        {
+          "type": "delta",
+          "data": {
+            "text": "and "
+          }
+        },
+        {
+          "type": "delta",
+          "data": {
+            "text": "probes "
+          }
+        },
+        {
+          "type": "delta",
+          "data": {
+            "text": "recovery "
+          }
+        },
+        {
+          "type": "delta",
+          "data": {
+            "text": "after "
+          }
+        },
+        {
+          "type": "delta",
+          "data": {
+            "text": "a "
+          }
+        },
+        {
+          "type": "delta",
+          "data": {
+            "text": "cooldown."
+          }
+        },
+        {
+          "type": "done",
+          "data": {
+            "text": "A circuit breaker temporarily stops calls to a failing provider and probes recovery after a cooldown.",
+            "parsed": null,
+            "provider": "scripted-local",
+            "model": "demo-local",
+            "usage": {
+              "input_tokens": 4,
+              "output_tokens": 16
+            },
+            "cost_usd": 0.0,
+            "accounted_cost_usd": 0.0,
+            "accounted_tokens": 20,
+            "cache_hit": false,
+            "latency_ms": 0.16208307351917028
+          }
+        }
+      ],
+      "result": {
+        "text": "A circuit breaker temporarily stops calls to a failing provider and probes recovery after a cooldown.",
+        "parsed": null,
+        "provider": "scripted-local",
+        "model": "demo-local",
+        "usage": {
+          "input_tokens": 4,
+          "output_tokens": 16
+        },
+        "cost_usd": 0.0,
+        "accounted_cost_usd": 0.0,
+        "accounted_tokens": 20,
+        "cache_hit": false,
+        "latency_ms": 0.16208307351917028
+      }
+    },
+    {
+      "title": "04 / Recover from an outage",
+      "description": "Two injected 503 responses trigger retry, open the circuit, and fail over.",
+      "request": {
+        "prompt": "Explain a circuit breaker in one sentence.",
+        "task": "general",
+        "policy": "quality",
+        "max_output_tokens": 256,
+        "max_cost_usd": 0.05,
+        "max_tokens": 8192,
+        "schema": null,
+        "cache": false
+      },
+      "events": [
+        {
+          "type": "route",
+          "data": {
+            "policy": "quality",
+            "task": "general",
+            "candidates": [
+              {
+                "model": "demo-premium",
+                "score": 0.96,
+                "estimated_cost_usd": 0.003582
+              },
+              {
+                "model": "demo-fast",
+                "score": 0.86,
+                "estimated_cost_usd": 0.0003582
+              },
+              {
+                "model": "demo-local",
+                "score": 0.68,
+                "estimated_cost_usd": 0.0
+              }
+            ]
+          }
+        },
+        {
+          "type": "attempt",
+          "data": {
+            "model": "demo-premium",
+            "attempt": 1,
+            "reserved_usd": 0.003582
+          }
+        },
+        {
+          "type": "failure",
+          "data": {
+            "model": "demo-premium",
+            "code": "http_503",
+            "usage_uncertain": false
+          }
+        },
+        {
+          "type": "retry",
+          "data": {
+            "model": "demo-premium",
+            "delay_seconds": 0.1
+          }
+        },
+        {
+          "type": "attempt",
+          "data": {
+            "model": "demo-premium",
+            "attempt": 2,
+            "reserved_usd": 0.003582
+          }
+        },
+        {
+          "type": "failure",
+          "data": {
+            "model": "demo-premium",
+            "code": "http_503",
+            "usage_uncertain": false
+          }
+        },
+        {
+          "type": "attempt",
+          "data": {
+            "model": "demo-fast",
+            "attempt": 1,
+            "reserved_usd": 0.0003582
+          }
+        },
+        {
+          "type": "delta",
+          "data": {
+            "text": "A "
+          }
+        },
+        {
+          "type": "delta",
+          "data": {
+            "text": "circuit "
+          }
+        },
+        {
+          "type": "delta",
+          "data": {
+            "text": "breaker "
+          }
+        },
+        {
+          "type": "delta",
+          "data": {
+            "text": "temporarily "
+          }
+        },
+        {
+          "type": "delta",
+          "data": {
+            "text": "stops "
+          }
+        },
+        {
+          "type": "delta",
+          "data": {
+            "text": "calls "
+          }
+        },
+        {
+          "type": "delta",
+          "data": {
+            "text": "to "
+          }
+        },
+        {
+          "type": "delta",
+          "data": {
+            "text": "a "
+          }
+        },
+        {
+          "type": "delta",
+          "data": {
+            "text": "failing "
+          }
+        },
+        {
+          "type": "delta",
+          "data": {
+            "text": "provider "
+          }
+        },
+        {
+          "type": "delta",
+          "data": {
+            "text": "and "
+          }
+        },
+        {
+          "type": "delta",
+          "data": {
+            "text": "probes "
+          }
+        },
+        {
+          "type": "delta",
+          "data": {
+            "text": "recovery "
+          }
+        },
+        {
+          "type": "delta",
+          "data": {
+            "text": "after "
+          }
+        },
+        {
+          "type": "delta",
+          "data": {
+            "text": "a "
+          }
+        },
+        {
+          "type": "delta",
+          "data": {
+            "text": "cooldown."
+          }
+        },
+        {
+          "type": "done",
+          "data": {
+            "text": "A circuit breaker temporarily stops calls to a failing provider and probes recovery after a cooldown.",
+            "parsed": null,
+            "provider": "scripted-fast",
+            "model": "demo-fast",
+            "usage": {
+              "input_tokens": 7,
+              "output_tokens": 16
+            },
+            "cost_usd": 2.13e-05,
+            "accounted_cost_usd": 2.1299999999999976e-05,
+            "accounted_tokens": 23,
+            "cache_hit": false,
+            "latency_ms": 0.20595896057784557
+          }
+        }
+      ],
+      "result": {
+        "text": "A circuit breaker temporarily stops calls to a failing provider and probes recovery after a cooldown.",
+        "parsed": null,
+        "provider": "scripted-fast",
+        "model": "demo-fast",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 16
+        },
+        "cost_usd": 2.13e-05,
+        "accounted_cost_usd": 2.1299999999999976e-05,
+        "accounted_tokens": 23,
+        "cache_hit": false,
+        "latency_ms": 0.20595896057784557
+      }
+    },
+    {
+      "title": "05 / Respect the open circuit",
+      "description": "The unhealthy route is skipped on the next request.",
+      "request": {
+        "prompt": "What is the capital of France?",
+        "task": "general",
+        "policy": "quality",
+        "max_output_tokens": 256,
+        "max_cost_usd": 0.05,
+        "max_tokens": 8192,
+        "schema": null,
+        "cache": false
+      },
+      "events": [
+        {
+          "type": "skipped",
+          "data": {
+            "model": "demo-premium",
+            "reason": "circuit_open"
+          }
+        },
+        {
+          "type": "route",
+          "data": {
+            "policy": "quality",
+            "task": "general",
+            "candidates": [
+              {
+                "model": "demo-fast",
+                "score": 0.86,
+                "estimated_cost_usd": 0.00035459999999999995
+              },
+              {
+                "model": "demo-local",
+                "score": 0.68,
+                "estimated_cost_usd": 0.0
+              }
+            ]
+          }
+        },
+        {
+          "type": "attempt",
+          "data": {
+            "model": "demo-fast",
+            "attempt": 1,
+            "reserved_usd": 0.00035459999999999995
+          }
+        },
+        {
+          "type": "delta",
+          "data": {
+            "text": "Paris "
+          }
+        },
+        {
+          "type": "delta",
+          "data": {
+            "text": "is "
+          }
+        },
+        {
+          "type": "delta",
+          "data": {
+            "text": "the "
+          }
+        },
+        {
+          "type": "delta",
+          "data": {
+            "text": "capital "
+          }
+        },
+        {
+          "type": "delta",
+          "data": {
+            "text": "of "
+          }
+        },
+        {
+          "type": "delta",
+          "data": {
+            "text": "France."
+          }
+        },
+        {
+          "type": "done",
+          "data": {
+            "text": "Paris is the capital of France.",
+            "parsed": null,
+            "provider": "scripted-fast",
+            "model": "demo-fast",
+            "usage": {
+              "input_tokens": 6,
+              "output_tokens": 6
+            },
+            "cost_usd": 9e-06,
+            "accounted_cost_usd": 9.000000000000002e-06,
+            "accounted_tokens": 12,
+            "cache_hit": false,
+            "latency_ms": 0.11320889461785555
+          }
+        }
+      ],
+      "result": {
+        "text": "Paris is the capital of France.",
+        "parsed": null,
+        "provider": "scripted-fast",
+        "model": "demo-fast",
+        "usage": {
+          "input_tokens": 6,
+          "output_tokens": 6
+        },
+        "cost_usd": 9e-06,
+        "accounted_cost_usd": 9.000000000000002e-06,
+        "accounted_tokens": 12,
+        "cache_hit": false,
+        "latency_ms": 0.11320889461785555
+      }
+    },
+    {
+      "title": "06 / Validate typed output",
+      "description": "JSON is buffered and validated before delivery.",
+      "request": {
+        "prompt": "Extract name and role. Ada Lovelace is an engineer.",
+        "task": "extract",
+        "policy": "balanced",
+        "max_output_tokens": 256,
+        "max_cost_usd": 0.05,
+        "max_tokens": 8192,
+        "schema": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "role": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "name",
+            "role"
+          ],
+          "additionalProperties": false
+        },
+        "cache": true
+      },
+      "events": [
+        {
+          "type": "skipped",
+          "data": {
+            "model": "demo-premium",
+            "reason": "circuit_open"
+          }
+        },
+        {
+          "type": "route",
+          "data": {
+            "policy": "balanced",
+            "task": "extract",
+            "candidates": [
+              {
+                "model": "demo-local",
+                "score": 0.1,
+                "estimated_cost_usd": 0.0
+              },
+              {
+                "model": "demo-fast",
+                "score": 0.0767,
+                "estimated_cost_usd": 0.0004182
+              }
+            ]
+          }
+        },
+        {
+          "type": "attempt",
+          "data": {
+            "model": "demo-local",
+            "attempt": 1,
+            "reserved_usd": 0.0
+          }
+        },
+        {
+          "type": "delta",
+          "data": {
+            "text": "{\"name\": \"Ada Lovelace\", \"role\": \"engineer\"}"
+          }
+        },
+        {
+          "type": "done",
+          "data": {
+            "text": "{\"name\": \"Ada Lovelace\", \"role\": \"engineer\"}",
+            "parsed": {
+              "name": "Ada Lovelace",
+              "role": "engineer"
+            },
+            "provider": "scripted-local",
+            "model": "demo-local",
+            "usage": {
+              "input_tokens": 29,
+              "output_tokens": 5
+            },
+            "cost_usd": 0.0,
+            "accounted_cost_usd": 0.0,
+            "accounted_tokens": 34,
+            "cache_hit": false,
+            "latency_ms": 0.12862496078014374
+          }
+        }
+      ],
+      "result": {
+        "text": "{\"name\": \"Ada Lovelace\", \"role\": \"engineer\"}",
+        "parsed": {
+          "name": "Ada Lovelace",
+          "role": "engineer"
+        },
+        "provider": "scripted-local",
+        "model": "demo-local",
+        "usage": {
+          "input_tokens": 29,
+          "output_tokens": 5
+        },
+        "cost_usd": 0.0,
+        "accounted_cost_usd": 0.0,
+        "accounted_tokens": 34,
+        "cache_hit": false,
+        "latency_ms": 0.12862496078014374
+      }
+    },
+    {
+      "title": "07 / Reject an impossible budget",
+      "description": "No provider is called when the token allowance cannot fit the request.",
+      "request": {
+        "prompt": "Explain a circuit breaker.",
+        "task": "general",
+        "policy": "balanced",
+        "max_output_tokens": 256,
+        "max_cost_usd": 0.05,
+        "max_tokens": 1,
+        "schema": null,
+        "cache": true
+      },
+      "events": [
+        {
+          "type": "skipped",
+          "data": {
+            "model": "demo-premium",
+            "reason": "circuit_open"
+          }
+        },
+        {
+          "type": "skipped",
+          "data": {
+            "model": "demo-fast",
+            "reason": "token_budget"
+          }
+        },
+        {
+          "type": "skipped",
+          "data": {
+            "model": "demo-local",
+            "reason": "token_budget"
+          }
+        }
+      ],
+      "error": "no_route"
+    }
+  ],
+  "state": {
+    "accounted_usd": 0.00012029999999999978,
+    "accounted_tokens": 101,
+    "max_session_usd": 5.0,
+    "cache_entries": 3,
+    "circuits": {
+      "demo-premium": {
+        "failures": 2,
+        "open": true
+      },
+      "demo-local": {
+        "failures": 0,
+        "open": false
+      },
+      "demo-fast": {
+        "failures": 0,
+        "open": false
+      }
+    }
+  },
+  "evaluation": {
+    "version": 1,
+    "mode": "scripted",
+    "dataset_sha256": "a7374b549913ea8d370ab5b71de29a016f016428a06832fb7a40944e7deadd38",
+    "cases": [
+      {
+        "id": "qa-capital",
+        "task": "general",
+        "prompt": "What is the capital of France?",
+        "expected": "Paris is the capital of France.",
+        "passed": true,
+        "completion": 1,
+        "lexical_f1": 1.0,
+        "schema_compliance": null,
+        "cost_usd": 9.000000000000002e-06,
+        "latency_ms": 0.07433304563164711,
+        "judge": null,
+        "result": {
+          "text": "Paris is the capital of France.",
+          "parsed": null,
+          "provider": "scripted-fast",
+          "model": "demo-fast",
+          "usage": {
+            "input_tokens": 6,
+            "output_tokens": 6
+          },
+          "cost_usd": 9e-06,
+          "accounted_cost_usd": 9.000000000000002e-06,
+          "accounted_tokens": 12,
+          "cache_hit": false,
+          "latency_ms": 0.07433304563164711,
+          "events": [
+            {
+              "type": "route",
+              "data": {
+                "policy": "balanced",
+                "task": "general",
+                "candidates": [
+                  {
+                    "model": "demo-fast",
+                    "score": 0.355,
+                    "estimated_cost_usd": 0.00035459999999999995
+                  },
+                  {
+                    "model": "demo-local",
+                    "score": 0.19,
+                    "estimated_cost_usd": 0.0
+                  },
+                  {
+                    "model": "demo-premium",
+                    "score": -0.02,
+                    "estimated_cost_usd": 0.003546
+                  }
+                ]
+              }
+            },
+            {
+              "type": "attempt",
+              "data": {
+                "model": "demo-fast",
+                "attempt": 1,
+                "reserved_usd": 0.00035459999999999995
+              }
+            },
+            {
+              "type": "delta",
+              "data": {
+                "text": "Paris "
+              }
+            },
+            {
+              "type": "delta",
+              "data": {
+                "text": "is "
+              }
+            },
+            {
+              "type": "delta",
+              "data": {
+                "text": "the "
+              }
+            },
+            {
+              "type": "delta",
+              "data": {
+                "text": "capital "
+              }
+            },
+            {
+              "type": "delta",
+              "data": {
+                "text": "of "
+              }
+            },
+            {
+              "type": "delta",
+              "data": {
+                "text": "France."
+              }
+            }
+          ]
+        }
+      },
+      {
+        "id": "explain-resilience",
+        "task": "general",
+        "prompt": "Explain a circuit breaker in one sentence.",
+        "expected": "A circuit breaker temporarily stops calls to a failing provider and probes recovery after a cooldown.",
+        "passed": true,
+        "completion": 1,
+        "lexical_f1": 1.0,
+        "schema_compliance": null,
+        "cost_usd": 2.1299999999999976e-05,
+        "latency_ms": 0.07604097481817007,
+        "judge": null,
+        "result": {
+          "text": "A circuit breaker temporarily stops calls to a failing provider and probes recovery after a cooldown.",
+          "parsed": null,
+          "provider": "scripted-fast",
+          "model": "demo-fast",
+          "usage": {
+            "input_tokens": 7,
+            "output_tokens": 16
+          },
+          "cost_usd": 2.13e-05,
+          "accounted_cost_usd": 2.1299999999999976e-05,
+          "accounted_tokens": 23,
+          "cache_hit": false,
+          "latency_ms": 0.07604097481817007,
+          "events": [
+            {
+              "type": "route",
+              "data": {
+                "policy": "balanced",
+                "task": "general",
+                "candidates": [
+                  {
+                    "model": "demo-fast",
+                    "score": 0.355,
+                    "estimated_cost_usd": 0.0003582
+                  },
+                  {
+                    "model": "demo-local",
+                    "score": 0.19,
+                    "estimated_cost_usd": 0.0
+                  },
+                  {
+                    "model": "demo-premium",
+                    "score": -0.02,
+                    "estimated_cost_usd": 0.003582
+                  }
+                ]
+              }
+            },
+            {
+              "type": "attempt",
+              "data": {
+                "model": "demo-fast",
+                "attempt": 1,
+                "reserved_usd": 0.0003582
+              }
+            },
+            {
+              "type": "delta",
+              "data": {
+                "text": "A "
+              }
+            },
+            {
+              "type": "delta",
+              "data": {
+                "text": "circuit "
+              }
+            },
+            {
+              "type": "delta",
+              "data": {
+                "text": "breaker "
+              }
+            },
+            {
+              "type": "delta",
+              "data": {
+                "text": "temporarily "
+              }
+            },
+            {
+              "type": "delta",
+              "data": {
+                "text": "stops "
+              }
+            },
+            {
+              "type": "delta",
+              "data": {
+                "text": "calls "
+              }
+            },
+            {
+              "type": "delta",
+              "data": {
+                "text": "to "
+              }
+            },
+            {
+              "type": "delta",
+              "data": {
+                "text": "a "
+              }
+            },
+            {
+              "type": "delta",
+              "data": {
+                "text": "failing "
+              }
+            },
+            {
+              "type": "delta",
+              "data": {
+                "text": "provider "
+              }
+            },
+            {
+              "type": "delta",
+              "data": {
+                "text": "and "
+              }
+            },
+            {
+              "type": "delta",
+              "data": {
+                "text": "probes "
+              }
+            },
+            {
+              "type": "delta",
+              "data": {
+                "text": "recovery "
+              }
+            },
+            {
+              "type": "delta",
+              "data": {
+                "text": "after "
+              }
+            },
+            {
+              "type": "delta",
+              "data": {
+                "text": "a "
+              }
+            },
+            {
+              "type": "delta",
+              "data": {
+                "text": "cooldown."
+              }
+            }
+          ]
+        }
+      },
+      {
+        "id": "sentiment-positive",
+        "task": "classify",
+        "prompt": "Classify this review as positive or negative. Return only the label. I love this product.",
+        "expected": "positive",
+        "passed": true,
+        "completion": 1,
+        "lexical_f1": 1.0,
+        "schema_compliance": null,
+        "cost_usd": 5.699999999999976e-06,
+        "latency_ms": 0.06400002166628838,
+        "judge": null,
+        "result": {
+          "text": "positive",
+          "parsed": null,
+          "provider": "scripted-fast",
+          "model": "demo-fast",
+          "usage": {
+            "input_tokens": 15,
+            "output_tokens": 1
+          },
+          "cost_usd": 5.7000000000000005e-06,
+          "accounted_cost_usd": 5.699999999999976e-06,
+          "accounted_tokens": 16,
+          "cache_hit": false,
+          "latency_ms": 0.06400002166628838,
+          "events": [
+            {
+              "type": "route",
+              "data": {
+                "policy": "balanced",
+                "task": "classify",
+                "candidates": [
+                  {
+                    "model": "demo-fast",
+                    "score": 0.355,
+                    "estimated_cost_usd": 0.00037229999999999994
+                  },
+                  {
+                    "model": "demo-local",
+                    "score": 0.19,
+                    "estimated_cost_usd": 0.0
+                  },
+                  {
+                    "model": "demo-premium",
+                    "score": -0.02,
+                    "estimated_cost_usd": 0.003723
+                  }
+                ]
+              }
+            },
+            {
+              "type": "attempt",
+              "data": {
+                "model": "demo-fast",
+                "attempt": 1,
+                "reserved_usd": 0.00037229999999999994
+              }
+            },
+            {
+              "type": "delta",
+              "data": {
+                "text": "positive"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "id": "sentiment-negative",
+        "task": "classify",
+        "prompt": "Classify this review as positive or negative. Return only the label. This product is terrible.",
+        "expected": "negative",
+        "passed": true,
+        "completion": 1,
+        "lexical_f1": 1.0,
+        "schema_compliance": null,
+        "cost_usd": 5.699999999999976e-06,
+        "latency_ms": 0.07950002327561378,
+        "judge": null,
+        "result": {
+          "text": "negative",
+          "parsed": null,
+          "provider": "scripted-fast",
+          "model": "demo-fast",
+          "usage": {
+            "input_tokens": 15,
+            "output_tokens": 1
+          },
+          "cost_usd": 5.7000000000000005e-06,
+          "accounted_cost_usd": 5.699999999999976e-06,
+          "accounted_tokens": 16,
+          "cache_hit": false,
+          "latency_ms": 0.07950002327561378,
+          "events": [
+            {
+              "type": "route",
+              "data": {
+                "policy": "balanced",
+                "task": "classify",
+                "candidates": [
+                  {
+                    "model": "demo-fast",
+                    "score": 0.355,
+                    "estimated_cost_usd": 0.0003738
+                  },
+                  {
+                    "model": "demo-local",
+                    "score": 0.19,
+                    "estimated_cost_usd": 0.0
+                  },
+                  {
+                    "model": "demo-premium",
+                    "score": -0.02,
+                    "estimated_cost_usd": 0.003738
+                  }
+                ]
+              }
+            },
+            {
+              "type": "attempt",
+              "data": {
+                "model": "demo-fast",
+                "attempt": 1,
+                "reserved_usd": 0.0003738
+              }
+            },
+            {
+              "type": "delta",
+              "data": {
+                "text": "negative"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "id": "extract-person",
+        "task": "extract",
+        "prompt": "Extract the name and role from this record. Ada Lovelace is an engineer.",
+        "expected": "{\"name\": \"Ada Lovelace\", \"role\": \"engineer\"}",
+        "passed": true,
+        "completion": 1,
+        "lexical_f1": 1.0,
+        "schema_compliance": 1,
+        "cost_usd": 1.5900000000000007e-05,
+        "latency_ms": 0.09129196405410767,
+        "judge": null,
+        "result": {
+          "text": "{\"name\": \"Ada Lovelace\", \"role\": \"engineer\"}",
+          "parsed": {
+            "name": "Ada Lovelace",
+            "role": "engineer"
+          },
+          "provider": "scripted-fast",
+          "model": "demo-fast",
+          "usage": {
+            "input_tokens": 33,
+            "output_tokens": 5
+          },
+          "cost_usd": 1.59e-05,
+          "accounted_cost_usd": 1.5900000000000007e-05,
+          "accounted_tokens": 38,
+          "cache_hit": false,
+          "latency_ms": 0.09129196405410767,
+          "events": [
+            {
+              "type": "route",
+              "data": {
+                "policy": "balanced",
+                "task": "extract",
+                "candidates": [
+                  {
+                    "model": "demo-fast",
+                    "score": 0.335,
+                    "estimated_cost_usd": 0.0004245
+                  },
+                  {
+                    "model": "demo-local",
+                    "score": 0.2,
+                    "estimated_cost_usd": 0.0
+                  },
+                  {
+                    "model": "demo-premium",
+                    "score": -0.005,
+                    "estimated_cost_usd": 0.004245
+                  }
+                ]
+              }
+            },
+            {
+              "type": "attempt",
+              "data": {
+                "model": "demo-fast",
+                "attempt": 1,
+                "reserved_usd": 0.0004245
+              }
+            },
+            {
+              "type": "delta",
+              "data": {
+                "text": "{\"name\": \"Ada Lovelace\", \"role\": \"engineer\"}"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "id": "summarize-gateway",
+        "task": "summarize",
+        "prompt": "Summarize in one sentence. ModelForge routes requests across providers. It applies budgets. It evaluates response quality.",
+        "expected": "ModelForge routes requests across providers, applies budgets, and evaluates response quality.",
+        "passed": true,
+        "completion": 1,
+        "lexical_f1": 1.0,
+        "schema_compliance": null,
+        "cost_usd": 1.8000000000000004e-05,
+        "latency_ms": 0.06287498399615288,
+        "judge": null,
+        "result": {
+          "text": "ModelForge routes requests across providers, applies budgets, and evaluates response quality.",
+          "parsed": null,
+          "provider": "scripted-fast",
+          "model": "demo-fast",
+          "usage": {
+            "input_tokens": 16,
+            "output_tokens": 11
+          },
+          "cost_usd": 1.8e-05,
+          "accounted_cost_usd": 1.8000000000000004e-05,
+          "accounted_tokens": 27,
+          "cache_hit": false,
+          "latency_ms": 0.06287498399615288,
+          "events": [
+            {
+              "type": "route",
+              "data": {
+                "policy": "balanced",
+                "task": "summarize",
+                "candidates": [
+                  {
+                    "model": "demo-fast",
+                    "score": 0.355,
+                    "estimated_cost_usd": 0.00038219999999999997
+                  },
+                  {
+                    "model": "demo-local",
+                    "score": 0.19,
+                    "estimated_cost_usd": 0.0
+                  },
+                  {
+                    "model": "demo-premium",
+                    "score": -0.02,
+                    "estimated_cost_usd": 0.003822
+                  }
+                ]
+              }
+            },
+            {
+              "type": "attempt",
+              "data": {
+                "model": "demo-fast",
+                "attempt": 1,
+                "reserved_usd": 0.00038219999999999997
+              }
+            },
+            {
+              "type": "delta",
+              "data": {
+                "text": "ModelForge "
+              }
+            },
+            {
+              "type": "delta",
+              "data": {
+                "text": "routes "
+              }
+            },
+            {
+              "type": "delta",
+              "data": {
+                "text": "requests "
+              }
+            },
+            {
+              "type": "delta",
+              "data": {
+                "text": "across "
+              }
+            },
+            {
+              "type": "delta",
+              "data": {
+                "text": "providers, "
+              }
+            },
+            {
+              "type": "delta",
+              "data": {
+                "text": "applies "
+              }
+            },
+            {
+              "type": "delta",
+              "data": {
+                "text": "budgets, "
+              }
+            },
+            {
+              "type": "delta",
+              "data": {
+                "text": "and "
+              }
+            },
+            {
+              "type": "delta",
+              "data": {
+                "text": "evaluates "
+              }
+            },
+            {
+              "type": "delta",
+              "data": {
+                "text": "response "
+              }
+            },
+            {
+              "type": "delta",
+              "data": {
+                "text": "quality."
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "metrics": {
+      "case_count": 6,
+      "pass_rate": 1,
+      "completion": 1,
+      "lexical_f1": 1.0,
+      "schema_compliance": 1,
+      "total_cost_usd": 7.559999999999994e-05,
+      "judge_cost_usd": 0,
+      "p95_latency_ms": 0.09129196405410767
+    }
+  },
+  "regressions": []
+}

@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "mode": "scripted",
+  "dataset_sha256": "a7374b549913ea8d370ab5b71de29a016f016428a06832fb7a40944e7deadd38",
+  "case_ids": [
+    "qa-capital",
+    "explain-resilience",
+    "sentiment-positive",
+    "sentiment-negative",
+    "extract-person",
+    "summarize-gateway"
+  ],
+  "minimums": {
+    "pass_rate": 1.0,
+    "completion": 1.0,
+    "lexical_f1": 1.0,
+    "schema_compliance": 1.0
+  },
+  "maximums": {
+    "total_cost_usd": 0.001,
+    "p95_latency_ms": 1000
+  }
+}

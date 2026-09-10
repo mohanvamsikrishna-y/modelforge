@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="370" viewBox="0 0 1200 370" role="img" aria-labelledby="title desc">
+<title id="title">ModelForge</title><desc id="desc">A provider-neutral gateway for model routing, failure recovery, and evaluation.</desc>
+<rect width="1200" height="370" rx="18" fill="#102f27"/>
+<g fill="none" stroke="#28483a"><path d="M760 0V370M840 0V370M920 0V370M1000 0V370M1080 0V370M1160 0V370M720 50H1200M720 130H1200M720 210H1200M720 290H1200"/></g>
+<path d="M55 60L73 49L91 60V82L73 93L55 82Z" fill="none" stroke="#c4e996" stroke-width="3"/>
+<text x="107" y="79" fill="#c4e996" font-family="Arial,sans-serif" font-size="17" letter-spacing="3">GATEWAY / ROUTING / EVALOPS</text>
+<text x="53" y="163" fill="#f6faf3" font-family="Arial,sans-serif" font-size="64" font-weight="700" letter-spacing="-2">ModelForge</text>
+<text x="57" y="209" fill="#d6e3d9" font-family="Arial,sans-serif" font-size="23">One interface. Visible decisions.</text>
+<text x="57" y="241" fill="#d6e3d9" font-family="Arial,sans-serif" font-size="23">Accountable model execution.</text>
+<rect x="56" y="289" width="168" height="31" rx="6" fill="#254638"/><text x="73" y="310" fill="#dfebd8" font-family="Arial,sans-serif" font-size="13">EXPLAINABLE ROUTING</text>
+<rect x="236" y="289" width="165" height="31" rx="6" fill="#254638"/><text x="251" y="310" fill="#dfebd8" font-family="Arial,sans-serif" font-size="13">BUDGET RESERVATIONS</text>
+<rect x="413" y="289" width="139" height="31" rx="6" fill="#254638"/><text x="429" y="310" fill="#dfebd8" font-family="Arial,sans-serif" font-size="13">REGRESSION GATES</text>
+<g stroke="#b7d48e" stroke-width="2" fill="none"><path d="M815 180H875V92H922M875 180H922M875 180V268H922"/></g>
+<rect x="679" y="149" width="136" height="62" rx="10" fill="#c4e996"/><text x="747" y="187" text-anchor="middle" fill="#153c2c" font-family="Arial,sans-serif" font-size="18" font-weight="700">Gateway</text>
+<g fill="#1c4032" stroke="#527454"><rect x="922" y="64" width="216" height="56" rx="8"/><rect x="922" y="152" width="216" height="56" rx="8"/><rect x="922" y="240" width="216" height="56" rx="8"/></g>
+<g fill="#e4edde" font-family="Arial,sans-serif" font-size="16" text-anchor="middle"><text x="1030" y="99">Quality policy</text><text x="1030" y="187">Cost policy</text><text x="1030" y="275">Latency policy</text></g>
+</svg>

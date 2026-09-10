@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=65"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "modelforge-gateway"
+version = "0.1.0"
+description = "A provider-neutral LLM gateway with explainable routing and evaluation gates"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.scripts]
+modelforge = "modelforge.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["modelforge*"]
+
+[tool.setuptools.package-data]
+modelforge = ["evals/*.json", "evals/*.jsonl"]
